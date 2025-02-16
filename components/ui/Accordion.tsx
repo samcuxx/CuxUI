@@ -11,10 +11,18 @@ interface AccordionContextType {
   isMultiple?: boolean;
 }
 
+interface AccordionItemContextType {
+  value: string;
+}
+
 const AccordionContext = createContext<AccordionContextType>({
   expanded: [],
   toggle: () => {},
   isMultiple: false,
+});
+
+const AccordionItemContext = createContext<AccordionItemContextType>({
+  value: "",
 });
 
 interface AccordionProps {
@@ -70,16 +78,18 @@ export function AccordionItem({
   const isExpanded = expanded.includes(value);
 
   return (
-    <div
-      className={cn(
-        "rounded-lg border border-gray-200 dark:border-[#222F43]",
-        isExpanded && "bg-gray-50 dark:bg-[#1a2333]",
-        disabled && "opacity-50 cursor-not-allowed",
-        className
-      )}
-    >
-      {children}
-    </div>
+    <AccordionItemContext.Provider value={{ value }}>
+      <div
+        className={cn(
+          "rounded-lg border border-gray-200 dark:border-[#222F43]",
+          isExpanded && "bg-gray-50 dark:bg-[#1a2333]",
+          disabled && "opacity-50 cursor-not-allowed",
+          className
+        )}
+      >
+        {children}
+      </div>
+    </AccordionItemContext.Provider>
   );
 }
 
@@ -95,7 +105,7 @@ export function AccordionTrigger({
   disabled = false,
 }: AccordionTriggerProps) {
   const { expanded, toggle } = useContext(AccordionContext);
-  const item = React.useContext(AccordionItemContext);
+  const item = useContext(AccordionItemContext);
   const isExpanded = expanded.includes(item.value);
 
   const handleClick = () => {
@@ -148,7 +158,7 @@ export function AccordionContent({
   className,
 }: AccordionContentProps) {
   const { expanded } = useContext(AccordionContext);
-  const item = React.useContext(AccordionItemContext);
+  const item = useContext(AccordionItemContext);
   const isExpanded = expanded.includes(item.value);
 
   return (
@@ -168,14 +178,6 @@ export function AccordionContent({
   );
 }
 
-interface AccordionItemContextType {
-  value: string;
-}
-
-const AccordionItemContext = createContext<AccordionItemContextType>({
-  value: "",
-});
-
 export function useAccordionContext() {
   const context = useContext(AccordionContext);
   if (!context) {
@@ -185,3 +187,5 @@ export function useAccordionContext() {
   }
   return context;
 }
+
+export { AccordionContext, AccordionItemContext };

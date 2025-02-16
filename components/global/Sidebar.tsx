@@ -18,12 +18,8 @@ import {
   Maximize2,
   Menu,
   X,
-  Search,
-  ChevronRight,
-  Github,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
 
 const components = [
   {
@@ -93,93 +89,10 @@ const components = [
   },
 ];
 
-interface SectionProps {
-  section: {
-    category: string;
-    items: {
-      name: string;
-      href: string;
-      icon: React.ReactNode;
-    }[];
-  };
-  isCollapsed: boolean;
-  onToggle: () => void;
-  pathname: string;
-  searchQuery: string;
-}
-
-function Section({
-  section,
-  isCollapsed,
-  onToggle,
-  pathname,
-  searchQuery,
-}: SectionProps) {
-  const filteredItems = section.items.filter((item) =>
-    item.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  if (filteredItems.length === 0) return null;
-
-  return (
-    <div>
-      <button
-        onClick={onToggle}
-        className="flex items-center justify-between w-full text-sm font-medium text-gray-500 dark:text-[#66768f] mb-2 hover:text-[#101010] dark:hover:text-[#94A9C9] transition-colors group"
-      >
-        <span>{section.category}</span>
-        <ChevronRight
-          className={cn(
-            "w-4 h-4 transition-transform duration-200",
-            !isCollapsed && "rotate-90"
-          )}
-        />
-      </button>
-      <AnimatePresence initial={false}>
-        {!isCollapsed && (
-          <motion.ul
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="space-y-1 overflow-hidden mb-6"
-          >
-            {filteredItems.map((item) => (
-              <motion.li
-                key={item.name}
-                initial={{ x: -20, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                exit={{ x: -20, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <Link
-                  href={item.href}
-                  className={cn(
-                    "flex items-center gap-3 px-3 py-2 rounded-lg transition-all",
-                    pathname === item.href
-                      ? "bg-[#ffe400] bg-opacity-10 text-[#ffe400]"
-                      : "text-[#101010] dark:text-[#94A9C9] hover:bg-gray-100 dark:hover:bg-[#1a2333]",
-                    "hover:translate-x-1"
-                  )}
-                >
-                  {item.icon}
-                  <span>{item.name}</span>
-                </Link>
-              </motion.li>
-            ))}
-          </motion.ul>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
 export default function Sidebar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [collapsedSections, setCollapsedSections] = useState<string[]>([]);
 
   useEffect(() => {
     setIsMounted(true);
@@ -196,22 +109,16 @@ export default function Sidebar() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Close mobile menu when route changes
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
-
-  const toggleSection = (category: string) => {
-    setCollapsedSections((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
-    );
-  };
 
   if (!isMounted) return null;
 
   return (
     <>
+      {/* Mobile Menu Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white dark:bg-[#131C31] border border-gray-200 dark:border-[#222F43] hover:bg-gray-100 dark:hover:bg-[#1a2333] transition-colors"
@@ -224,6 +131,7 @@ export default function Sidebar() {
         )}
       </button>
 
+      {/* Backdrop */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"
@@ -231,75 +139,52 @@ export default function Sidebar() {
         />
       )}
 
-      <motion.div
-        initial={false}
-        animate={{
-          x: isOpen ? 0 : -280,
-          width: 280,
-        }}
+      {/* Sidebar */}
+      <div
         className={cn(
-          "fixed top-0 left-0 z-40 h-screen bg-white dark:bg-[#131C31] border-r border-gray-200 dark:border-[#222F43] lg:translate-x-0 lg:static",
-          "p-4"
+          "fixed top-0 left-0 z-40 h-screen bg-white dark:bg-[#131C31] border-r border-gray-200 dark:border-[#222F43] transition-transform duration-300 lg:translate-x-0 lg:static",
+          "w-[280px] p-4",
+          isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-8">
           <Link
             href="/"
             className="text-xl font-bold text-[#101010] dark:text-[#94A9C9]"
           >
-            SamComponents
+            <span className="text-[#ffe400]">Cux</span>UI
           </Link>
           <Theme />
         </div>
 
-        <div className="relative mb-6">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search components..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className={cn(
-              "w-full h-10 pl-9 pr-4 rounded-lg text-sm",
-              "bg-gray-50 dark:bg-[#1a2333]",
-              "border border-gray-200 dark:border-[#222F43]",
-              "focus:outline-none focus:ring-2 focus:ring-[#ffe400] focus:border-transparent",
-              "text-[#101010] dark:text-[#94A9C9]",
-              "placeholder-gray-400 dark:placeholder-[#66768f]"
-            )}
-          />
-        </div>
-
-        <nav className="space-y-6 h-[calc(100vh-12rem)] overflow-y-auto">
+        <nav className="space-y-8 h-[calc(100vh-5rem)] overflow-y-auto">
           {components.map((section) => (
-            <Section
-              key={section.category}
-              section={section}
-              isCollapsed={collapsedSections.includes(section.category)}
-              onToggle={() => toggleSection(section.category)}
-              pathname={pathname}
-              searchQuery={searchQuery}
-            />
+            <div key={section.category}>
+              <h3 className="text-sm font-medium text-gray-500 dark:text-[#66768f] mb-4">
+                {section.category}
+              </h3>
+              <ul className="space-y-2">
+                {section.items.map((item) => (
+                  <li key={item.name}>
+                    <Link
+                      href={item.href}
+                      className={cn(
+                        "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors",
+                        pathname === item.href
+                          ? "bg-[#ffe400] bg-opacity-10 text-[#ffe400]"
+                          : "text-[#101010] dark:text-[#94A9C9] hover:bg-gray-100 dark:hover:bg-[#1a2333]"
+                      )}
+                    >
+                      {item.icon}
+                      <span>{item.name}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           ))}
         </nav>
-
-        <div className="absolute bottom-4 left-4 right-4">
-          <a
-            href="https://github.com/yourusername/SamComponents"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-lg transition-colors",
-              "text-[#101010] dark:text-[#94A9C9]",
-              "hover:bg-gray-100 dark:hover:bg-[#1a2333]",
-              "border border-gray-200 dark:border-[#222F43]"
-            )}
-          >
-            <Github className="w-4 h-4" />
-            <span className="text-sm">View on GitHub</span>
-          </a>
-        </div>
-      </motion.div>
+      </div>
     </>
   );
 }
