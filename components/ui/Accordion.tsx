@@ -129,21 +129,13 @@ export function AccordionTrigger({
       onKeyDown={handleKeyDown}
       disabled={disabled}
       className={cn(
-        "flex w-full items-center justify-between px-4 py-3 text-left font-medium transition-colors",
-        "hover:bg-gray-100 dark:hover:bg-[#222F43]",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffe400] focus-visible:ring-offset-2",
-        "disabled:pointer-events-none",
+        "flex w-full items-center justify-between py-4 text-sm font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180",
         className
       )}
-      aria-expanded={isExpanded.toString()}
+      data-state={isExpanded ? "open" : "closed"}
     >
       {children}
-      <ChevronDown
-        className={cn(
-          "h-4 w-4 shrink-0 text-gray-500 dark:text-[#66768f] transition-transform duration-200",
-          isExpanded && "rotate-180"
-        )}
-      />
+      <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
     </button>
   );
 }

@@ -5,8 +5,8 @@ import React, { useEffect, useRef } from "react";
 export default function CursorEffect() {
   const cursorDotRef = useRef<HTMLDivElement>(null);
   const cursorBorderRef = useRef<HTMLDivElement>(null);
-  const requestRef = useRef<number>();
-  const previousTimeRef = useRef<number>();
+  const requestRef = useRef<number | null>(null);
+  const previousTimeRef = useRef<number | null>(null);
 
   const isMobile = () => {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -43,6 +43,7 @@ export default function CursorEffect() {
     };
 
     function handleMouseMove(e: MouseEvent) {
+      if (!cursorDot) return;
       const { clientX, clientY } = e;
       cursorDot.style.transform = `translate(${clientX}px, ${clientY}px)`;
       endX = clientX;
@@ -50,14 +51,17 @@ export default function CursorEffect() {
     }
 
     function handleMouseDown() {
+      if (!cursorBorder) return;
       cursorBorder.classList.add("active");
     }
 
     function handleMouseUp() {
+      if (!cursorBorder) return;
       cursorBorder.classList.remove("active");
     }
 
     function handleMouseEnter(e: MouseEvent) {
+      if (!cursorBorder) return;
       const target = e.target as HTMLElement;
       if (
         target.tagName.toLowerCase() === "a" ||
@@ -68,6 +72,7 @@ export default function CursorEffect() {
     }
 
     function handleMouseLeave(e: MouseEvent) {
+      if (!cursorBorder) return;
       const target = e.target as HTMLElement;
       if (
         target.tagName.toLowerCase() === "a" ||

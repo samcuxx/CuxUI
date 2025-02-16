@@ -4,7 +4,6 @@ import Image from "next/image";
 import MagneticLink from "../ui/MagneticLink";
 import { projects } from "@/data/projects";
 
-
 export function FeaturedProjects() {
   const featuredProjects = projects.filter((project) => project.featured);
 
@@ -45,17 +44,19 @@ export function FeaturedProjects() {
                 >
                   <div className="flex gap-3">
                     <MagneticLink
-                      href={project.liveUrl}
+                      href={project.link}
                       className="p-2 bg-[#ffe400] rounded-lg hover:scale-110 transition-transform"
                     >
                       <ExternalLink className="w-5 h-5 text-[#101010]" />
                     </MagneticLink>
-                    <MagneticLink
-                      href={project.githubUrl}
-                      className="p-2 bg-[#ffe400] rounded-lg hover:scale-110 transition-transform"
-                    >
-                      <Github className="w-5 h-5 text-[#101010]" />
-                    </MagneticLink>
+                    {project.github && (
+                      <MagneticLink
+                        href={project.github}
+                        className="p-2 bg-[#ffe400] rounded-lg hover:scale-110 transition-transform"
+                      >
+                        <Github className="w-5 h-5 text-[#101010]" />
+                      </MagneticLink>
+                    )}
                   </div>
                 </div>
               </div>

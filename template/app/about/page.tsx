@@ -1,4 +1,4 @@
-import { AboutContent } from "@/components/About/AboutContent";
+import { AboutContent } from "@/template/components/About/AboutContent";
 import BgGlow from "@/components/ui/BgGlow";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 

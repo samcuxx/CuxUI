@@ -2,8 +2,7 @@
 
 import React from "react";
 import { Filter, Search } from "lucide-react";
-import { useProjectsFilter } from "@/hooks/useProjectsFilter";
-
+import { useProjectsFilter } from "@/contexts/ProjectsFilterContext";
 
 export function ProjectsFilter() {
   const {
@@ -27,7 +26,8 @@ export function ProjectsFilter() {
           <h3
             className={`font-dynapuff text-2xl font-semibold text-[#101010] dark:text-[#94A9C9]`}
           >
-            {activeFilter} Projects
+            {filters.find((f) => f.value === activeFilter)?.label || "All"}{" "}
+            Projects
           </h3>
         </div>
         <span className="text-sm text-gray-500 dark:text-[#66768f]">
@@ -37,18 +37,18 @@ export function ProjectsFilter() {
       <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 py-2">
         {/* Filters */}
         <div className="flex flex-wrap gap-3">
-          {filters.map((filter, index) => (
+          {filters.map((filter) => (
             <button
-              key={index}
-              onClick={() => setActiveFilter(filter)}
+              key={filter.value}
+              onClick={() => setActiveFilter(filter.value)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300
                 ${
-                  activeFilter === filter
+                  activeFilter === filter.value
                     ? "bg-[#ffe400] text-[#101010]"
                     : "bg-gray-100 dark:bg-[#131C31] text-gray-600 dark:text-[#66768f] hover:bg-[#ffe400] hover:text-[#101010]"
                 }`}
             >
-              {filter}
+              {filter.label} ({filter.count})
             </button>
           ))}
         </div>

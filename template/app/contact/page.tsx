@@ -1,4 +1,4 @@
-import { ContactContent } from "@/components/Contact/ContactContent";
+import { ContactContent } from "@/template/components/Contact/ContactContent";
 import BgGlow from "@/components/ui/BgGlow";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 

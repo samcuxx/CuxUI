@@ -1,30 +1,35 @@
 import { LucideIcon, Home, User, Code, Mail } from "lucide-react";
 
 interface NavItem {
+  id: string;
   title: string;
-  href: string;
+  path: string;
   icon: LucideIcon;
 }
 
 const navItems: NavItem[] = [
   {
+    id: "home",
     title: "Home",
-    href: "/",
+    path: "/",
     icon: Home,
   },
   {
+    id: "about",
     title: "About",
-    href: "/about",
+    path: "/about",
     icon: User,
   },
   {
+    id: "components",
     title: "Components",
-    href: "/components",
+    path: "/components",
     icon: Code,
   },
   {
+    id: "contact",
     title: "Contact",
-    href: "/contact",
+    path: "/contact",
     icon: Mail,
   },
 ];

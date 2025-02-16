@@ -1,4 +1,4 @@
-import { PhotosContent } from "@/components/Photos/PhotosContent";
+import { PhotosContent } from "@/template/components/Photos/PhotosContent";
 import BgGlow from "@/components/ui/BgGlow";
 import { ScrollProgress } from "@/components/ui/ScrollProgress";
 
