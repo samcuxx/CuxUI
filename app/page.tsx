@@ -16,7 +16,7 @@ import TypewriterText from "@/components/ui/TypewriterText";
 import { AnimatedTitle, AnimatedParagraph } from "@/components/ui/AnimatedText";
 import MagneticLink from "@/components/ui/MagneticLink";
 import { Button } from "@/components/ui/Button";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const features = [
   {

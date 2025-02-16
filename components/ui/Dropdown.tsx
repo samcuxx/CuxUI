@@ -5,11 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-interface DropdownProps {
-  trigger: React.ReactNode;
+export interface DropdownProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
-  align?: "left" | "right";
-  className?: string;
 }
 
 export function Dropdown({

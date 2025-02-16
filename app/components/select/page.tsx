@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Select, SelectGroup, SelectOption } from "@/components/ui/Select";
+import { Select, SelectOption } from "@/components/ui/Select";
 
 const frameworks: SelectOption[] = [
   { value: "next", label: "Next.js" },

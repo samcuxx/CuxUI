@@ -24,10 +24,9 @@ export default function CursorEffect() {
     let endX = window.innerWidth / 2;
     let endY = window.innerHeight / 2;
 
-    function animateDot(time: number) {
+    const animate = () => {
+      const time = Date.now();
       if (previousTimeRef.current !== undefined) {
-        const deltaTime = time - previousTimeRef.current;
-
         const dotRect = cursorDot.getBoundingClientRect();
         const borderRect = cursorBorder.getBoundingClientRect();
 
@@ -40,8 +39,8 @@ export default function CursorEffect() {
       }
 
       previousTimeRef.current = time;
-      requestRef.current = requestAnimationFrame(animateDot);
-    }
+      requestRef.current = requestAnimationFrame(animate);
+    };
 
     function handleMouseMove(e: MouseEvent) {
       const { clientX, clientY } = e;
@@ -84,7 +83,7 @@ export default function CursorEffect() {
     document.addEventListener("mouseenter", handleMouseEnter, true);
     document.addEventListener("mouseleave", handleMouseLeave, true);
 
-    requestRef.current = requestAnimationFrame(animateDot);
+    requestRef.current = requestAnimationFrame(animate);
 
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);

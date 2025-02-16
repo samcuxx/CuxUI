@@ -2,7 +2,8 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { ChevronDown, ChevronUp, ChevronsUpDown } from "lucide-react";
 
-interface TableProps extends React.HTMLAttributes<HTMLTableElement> {
+interface TableProps extends React.TableHTMLAttributes<HTMLTableElement> {
+  children: React.ReactNode;
   striped?: boolean;
   hoverable?: boolean;
   bordered?: boolean;
