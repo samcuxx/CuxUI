@@ -18,6 +18,7 @@ import {
   Maximize2,
   Menu,
   X,
+  ListFilter,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -85,6 +86,16 @@ const components = [
         href: "/components/modals",
         icon: <Maximize2 className="w-4 h-4" />,
       },
+       {
+    name: "Dropdowns",
+    href: "/components/dropdowns",
+    icon: <ChevronDown className="w-4 h-4" />,
+  },
+  {
+    name: "Select",
+    href: "/components/select",
+    icon: <ListFilter className="w-4 h-4" />,
+  },
     ],
   },
 ];
