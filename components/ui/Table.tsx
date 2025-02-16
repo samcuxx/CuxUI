@@ -10,26 +10,33 @@ interface TableProps extends React.TableHTMLAttributes<HTMLTableElement> {
   compact?: boolean;
 }
 
-const Table = React.forwardRef<HTMLTableElement, TableProps>(
-  ({ className, striped, hoverable, bordered, compact, ...props }, ref) => {
-    return (
-      <div
+export function Table({
+  children,
+  className,
+  striped,
+  hoverable,
+  compact,
+  ...props
+}: TableProps) {
+  return (
+    <div className="w-full overflow-auto">
+      <table
         className={cn(
-          "w-full overflow-auto",
-          bordered && "border border-gray-200 dark:border-[#222F43] rounded-lg",
+          "w-full caption-bottom text-sm",
+          striped &&
+            "border-separate [border-spacing:0] [&_tr:nth-child(even)]:bg-gray-50 dark:[&_tr:nth-child(even)]:bg-[#1a2333]",
+          hoverable &&
+            "[&_tr:hover]:bg-gray-100 dark:[&_tr:hover]:bg-[#1a2333]",
+          compact && "[&_td]:py-2 [&_th]:py-2",
           className
         )}
+        {...props}
       >
-        <table
-          ref={ref}
-          className={cn("w-full caption-bottom text-sm", className)}
-          {...props}
-        />
-      </div>
-    );
-  }
-);
-Table.displayName = "Table";
+        {children}
+      </table>
+    </div>
+  );
+}
 
 const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
@@ -146,7 +153,6 @@ const TableCaption = React.forwardRef<
 TableCaption.displayName = "TableCaption";
 
 export {
-  Table,
   TableHeader,
   TableBody,
   TableFooter,

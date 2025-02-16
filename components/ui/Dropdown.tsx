@@ -7,13 +7,46 @@ import { cn } from "@/lib/utils";
 
 export interface DropdownProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
+  trigger: React.ReactNode;
+  align?: "left" | "right";
+}
+
+export interface DropdownItemProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
+  disabled?: boolean;
+}
+
+export function DropdownItem({
+  children,
+  className,
+  disabled,
+  ...props
+}: DropdownItemProps) {
+  return (
+    <button
+      className={cn(
+        "flex w-full items-center px-4 py-2 text-sm text-gray-700 dark:text-[#94A9C9] hover:bg-gray-100 dark:hover:bg-[#1a2333] disabled:opacity-50 disabled:cursor-not-allowed",
+        className
+      )}
+      disabled={disabled}
+      {...props}
+    >
+      {children}
+    </button>
+  );
+}
+
+export function DropdownSeparator() {
+  return <div className="h-px my-1 bg-gray-200 dark:bg-[#222F43]" />;
 }
 
 export function Dropdown({
-  trigger,
   children,
+  trigger,
   align = "left",
   className,
+  ...props
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -33,7 +66,11 @@ export function Dropdown({
   }, []);
 
   return (
-    <div className="relative inline-block" ref={dropdownRef}>
+    <div
+      className={cn("relative inline-block", className)}
+      ref={dropdownRef}
+      {...props}
+    >
       <div onClick={() => setIsOpen(!isOpen)}>{trigger}</div>
       <AnimatePresence>
         {isOpen && (
@@ -52,33 +89,6 @@ export function Dropdown({
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
-  );
-}
-
-interface DropdownItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode;
-  disabled?: boolean;
-}
-
-export function DropdownItem({
-  children,
-  disabled = false,
-  className,
-  ...props
-}: DropdownItemProps) {
-  return (
-    <div
-      className={cn(
-        "px-4 py-2 text-sm text-[#101010] dark:text-[#94A9C9]",
-        "hover:bg-gray-100 dark:hover:bg-[#1a2333] cursor-pointer",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffe400]",
-        disabled && "opacity-50 cursor-not-allowed pointer-events-none",
-        className
-      )}
-      {...props}
-    >
-      {children}
     </div>
   );
 }
@@ -109,19 +119,5 @@ export function DropdownTrigger({
       {children}
       <ChevronDown className="w-4 h-4" />
     </button>
-  );
-}
-
-interface DropdownSeparatorProps extends React.HTMLAttributes<HTMLDivElement> {}
-
-export function DropdownSeparator({
-  className,
-  ...props
-}: DropdownSeparatorProps) {
-  return (
-    <div
-      className={cn("h-px my-1 bg-gray-200 dark:bg-[#222F43]", className)}
-      {...props}
-    />
   );
 }
